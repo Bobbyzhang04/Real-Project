@@ -24,11 +24,11 @@ def music():
                 pass
                 # TODO: Use API
             else:
-                print(audio_file.tag.album)
-                print(audio_file.tag.album_artist)
-                print(audio_file.tag.title)
-                print(audio_file.tag.track_num)
                 if audio_file.tag.album_artist == None:
+                    audio_file.tag.album_artist = 'unknownartist'
+                    
+                    
+                    
                     if os.path.exists('/Users/snoopbob/Music/unknownartist'):
                         os.chdir('/Users/snoopbob/Music/unknownartist')
                         if audio_file.tag.album == None:
