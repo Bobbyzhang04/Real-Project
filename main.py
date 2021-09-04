@@ -27,11 +27,14 @@ def music():
             else:
                 if audio_file.tag.album_artist == None:
                     audio_file.tag.album_artist = 'unknown_artist'
+                # remove slashes
+                audio_file.tag.album_artist = audio_file.tag.album_artist.replace('/', '-')
                 artist_filepath = '/Users/snoopbob/Music/%s' % (audio_file.tag.album_artist)
                 if not os.path.exists(artist_filepath):
                     os.mkdir(artist_filepath)
                 if audio_file.tag.album == None:
                     audio_file.tag.album = 'unknown_album'
+                audio_file.tag.album = audio_file.tag.album.replace('/', '-')
                 album_filepath = '%s/%s' % (artist_filepath, audio_file.tag.album)
                 if not os.path.exists(album_filepath):
                     os.mkdir(album_filepath)
