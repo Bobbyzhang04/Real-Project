@@ -29,40 +29,39 @@ def music():
                 print(audio_file.tag.title)
                 print(audio_file.tag.track_num)
                 if audio_file.tag.album_artist == None:
-                    if os.path.exist(
-                            '/Users/snoopbob/Music/unknownartist') == True:
+                    if os.path.exists('/Users/snoopbob/Music/unknownartist'):
                         os.chdir('/Users/snoopbob/Music/unknownartist')
                         if audio_file.tag.album == None:
-                            if os.path.exist(
+                            if os.path.exists(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
-                                (audio_file.tag.album)) == True:
+                                (audio_file.tag.album)):
                                 os.chdir(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
                                     (audio_file.tag.album))
-                            elif os.path.exist(
+                            elif not os.path.exists(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
-                                (audio_file.tag.album)) == False:
+                                (audio_file.tag.album)):
                                 path = '/Users/snoopbob/Music/unknownartist/%s' % (
                                     audio_file.tag.album)
                                 os.mkdir(path, 0o0755)
                                 os.chdir(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
                                     (audio_file.tag.album))
-                    elif os.path.exist(
-                            '/Users/snoopbob/Music/unknownartist') == False:
+                    elif not os.path.exists(
+                            '/Users/snoopbob/Music/unknownartist'):
                         path = '/Users/snoopbob/Music/unknownartist'
                         os.mkdir(path, 0o0755)
                         os.chdir('/Users/snoopbob/Music/unknownartist')
                         if audio_file.tag.album == None:
-                            if os.path.exist(
+                            if os.path.exists(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
-                                (audio_file.tag.album)) == True:
+                                (audio_file.tag.album)):
                                 os.chdir(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
                                     (audio_file.tag.album))
-                            elif os.path.exist(
+                            elif not os.path.exists(
                                     '/Users/snoopbob/Music/unknownartist/%s' %
-                                (audio_file.tag.album)) == False:
+                                (audio_file.tag.album)):
                                 path = '/Users/snoopbob/Music/unknownartist/%s' % (
                                     audio_file.tag.album)
                                 os.mkdir(path, 0o0755)
