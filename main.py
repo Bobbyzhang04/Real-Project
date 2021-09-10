@@ -46,6 +46,38 @@ def music():
         i = i + 1
 
 
+def video():
+    all_file_path = get_all_file_path('/Users/snoopbob/Downloads')
+    i = 0
+    while i < len(all_file_path):
+        mp4_filename = all_file_path[i]
+        split_filename = os.path.splitext(mp4_filename)
+        file_ext = str.lower(split_filename[1])
+        if file_ext == '.mp4':
+            download_mp4_filepath = '/Users/snoopbob/Downloads/%s' % (mp4_filename)
+            video_mp4_filepath = '/Users/snoopbob/Videos/%s' % (mp4_filename)
+            while os.path.exists(video_mp4_filepath):
+                video_mp4_filepath = '%s %d' % (video_mp4_filepath, 1)
+            os.rename(download_mp4_filepath, video_mp4_filepath)
+        i = i + 1
+
+
+def others():
+    all_file_path = get_all_file_path('/Users/snoopbob/Downloads')
+    i = 0
+    while i < len(all_file_path):
+        others_filename = all_file_path[i]
+        split_filename = os.path.splitext(others_filename)
+        file_ext = str.lower(split_filename[1])
+        if file_ext == '.zip' and '.7z' and '.msi' and '.exe':
+            download_others_filepath = '/Users/snoopbob/Downloads/%s' % (others_filename)
+            others_filepath = '/Users/snoopbob/Videos/%s' % (others_filename)
+            while os.path.exists(others_filepath):
+                others_filepath = '%s %d' % (others_filepath, 1)
+            os.rename(download_others_filepath, others_filepath)
+        i = i + 1
+
+
 def main():
     music()
 
