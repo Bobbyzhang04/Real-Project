@@ -63,15 +63,19 @@ def video():
 
 
 def others():
+    others_folder = '/Users/snoopbob/Others'
+    if not os.path.exists(others_folder):
+        os.mkdir(others_folder)
     all_file_path = get_all_file_path('/Users/snoopbob/Downloads')
     i = 0
     while i < len(all_file_path):
         others_filename = all_file_path[i]
         split_filename = os.path.splitext(others_filename)
         file_ext = str.lower(split_filename[1])
-        if file_ext == '.zip' and '.7z' and '.msi' and '.exe':
+        file_type = ['.zip', '.7z', '.msi', '.exe']
+        if file_ext in file_type:
             download_others_filepath = '/Users/snoopbob/Downloads/%s' % (others_filename)
-            others_filepath = '/Users/snoopbob/Videos/%s' % (others_filename)
+            others_filepath = '%s/%s' % (others_folder, others_filename)
             while os.path.exists(others_filepath):
                 others_filepath = '%s %d' % (others_filepath, 1)
             os.rename(download_others_filepath, others_filepath)
@@ -80,6 +84,8 @@ def others():
 
 def main():
     music()
+    video()
+    others()
 
 
 if __name__ == '__main__':
