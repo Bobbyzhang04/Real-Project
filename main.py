@@ -87,13 +87,74 @@ def images(source_file_path):
     os.rename(source_file_path, destination_image_path)
 
 
+def text(source_file_path):
+    with open(source_file_path) as text:
+        document_content = text.readlines()
+    return document_content
+
+
+def msword(source_file_path):
+    # get data as one string
+    document = docx.Document(source_file_path)
+    document_content = ''
+    i = 0
+    while i < len(document.paragraphs):
+        document_content = document_content + document.paragraphs[i].text
+        i = i + 1
+    return document_content
+
+
+def categorize_keywords(keywords_list):
+    math_science_keywords = [
+      'angle',
+      'triangle',
+      'sqaure',
+      'roots',
+      'force',
+      'mixture',
+      'solution',
+      'solvent',
+      'reaction',
+      'equilibrium',
+      'speed',
+      'acceleration',
+      'atom',
+      'equation',
+      'differenciation',
+      'integration',
+    ]
+    i = 0
+    while i < len(keywords_list):
+        if keywords_list[i] in math_science_keywords:
+            return 'math_science'
+        i = i + 1
+    return 'everything_else'
+
+
 def document(source_file_path):
+    split_filename = os.path.splitext(source_file_path)
+    file_ext = str.lower(split_filename[1])
+    ms_ext=[
+        '.doc',
+        '.docx',
+        '.ods',
+        '.odt',
+    ]
+    if file_ext == '.txt':
+        text_data = text()
+    elif file_ext in ms_ext:
+        text_data = msword()
+
     document_filename = os.path.basename(source_file_path)
     sm_api_key = '7FB201A31A'
-    document_catagory = .....
-    document_catagory = document_catagory.json()
-    document_catagorization = ....
-    destination_document_path = "/Users/snoopbob/document/%s/%s" % (document_catagorization, document_filename)
+    request_body = dict()
+    request_body['sm_api_input'] = text_data
+    url = "https://api.smmry.com?SM_API_KEY=%s" % (sm_api_key)
+    response = requests.post(url, request_body)
+    dict_response = response.json()
+    keywords = dict_response['sm_api_keyword_array']
+    doc_category = categorize_keywords(keywords)
+    destination_document_path = "/Users/snoopbob/document/%s/%s" % (doc_category, document_filename)
     while os.path.exists(destination_document_path):
         destination_document_path = '%s %d' % (destination_document_path, 1)
     os.rename(source_file_path, destination_document_path)
@@ -103,15 +164,15 @@ def main():
     document_ext=[
         '.doc',
         '.docx',
-        '.html',
-        '.htm',
-        '.odt',
-        '.pdf',
-        '.xls',
-        '.xlsx',
         '.ods',
-        '.ppt',
-        '.pptx',
+        '.odt',
+        # '.html',
+        # '.htm',
+        # '.pdf',
+        # '.xls',
+        # '.xlsx',
+        # '.ppt',
+        # '.pptx',
         '.txt',
     ]
     video_ext = [
