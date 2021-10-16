@@ -149,7 +149,7 @@ def document(source_file_path):
     sm_api_key = '7FB201A31A'
     request_body = dict()
     request_body['sm_api_input'] = text_data
-    url = "https://api.smmry.com?SM_API_KEY=%s" % (sm_api_key)
+    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10) 
     response = requests.post(url, request_body)
     dict_response = response.json()
     keywords = dict_response['sm_api_keyword_array']
