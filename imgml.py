@@ -14,7 +14,7 @@ our_model = keras.applications.VGG16(
 )
 
 
-images = ['C:\\Users\\johna\\Downloads\\dog.jpg']
+images = ['/Users/snoopbob/Downloads/dog.jpeg']
 
 
 class MySequence(keras.utils.Sequence):
