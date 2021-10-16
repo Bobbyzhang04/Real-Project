@@ -141,9 +141,9 @@ def document(source_file_path):
         '.odt',
     ]
     if file_ext == '.txt':
-        text_data = text()
+        text_data = text(source_file_path)
     elif file_ext in ms_ext:
-        text_data = msword()
+        text_data = msword(source_file_path)
 
     document_filename = os.path.basename(source_file_path)
     sm_api_key = '7FB201A31A'
