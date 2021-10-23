@@ -48,7 +48,7 @@ def music(source_file_path):
         music_mp3_filepath = '%s/%s' % (album_filepath, file_name)
         while os.path.exists(music_mp3_filepath):
             music_mp3_filepath = '%s %d' % (music_mp3_filepath, 1)
-        os.makedirs(music_mp3_filepath)
+        os.makedirs(os.path.dirname(music_mp3_filepath))
         os.rename(download_mp3_filepath, music_mp3_filepath)
 
 
@@ -57,8 +57,9 @@ def video(source_file_path):
     video_mp4_filepath = '%s/Videos/%s' % (
         get_my_user_folder_path(), mp4_filename)
     while os.path.exists(video_mp4_filepath):
-        video_mp4_filepath = '%s %d' % (video_mp4_filepath, 1)
-    os.makedirs(video_mp4_filepath)
+        video_mp4_filepath = '%s/Videos/%d%s' % (
+        get_my_user_folder_path(), 1, mp4_filename)
+    os.makedirs(os.path.dirname(video_mp4_filepath), exist_ok=True)
     os.rename(source_file_path, video_mp4_filepath)
 
 
@@ -68,7 +69,7 @@ def others(source_file_path):
     others_filepath = '%s/%s' % (others_folder, split_filename)
     while os.path.exists(others_filepath):
         others_filepath = '%s %d' % (others_filepath, 1)
-    os.makedirs(others_filepath)
+    os.makedirs(os.path.dirname(others_filepath))
     os.rename(source_file_path, others_filepath)
 
 
@@ -94,7 +95,7 @@ def images(source_file_path):
         get_my_user_folder_path(), image_catagorization, image_filename)
     while os.path.exists(destination_image_path):
         destination_image_path = '%s %d' % (destination_image_path, 1)
-    os.makedirs(destination_image_path)
+    os.makedirs(os.path.dirname(destination_image_path))
     os.rename(source_file_path, destination_image_path)
 
 
@@ -170,7 +171,7 @@ def document(source_file_path):
         get_my_user_folder_path(), doc_category, document_filename)
     while os.path.exists(destination_document_path):
         destination_document_path = '%s %d' % (destination_document_path, 1)
-    os.makedirs(destination_document_path)
+    os.makedirs(os.path.dirname(destination_document_path))
     os.rename(source_file_path, destination_document_path)
 
 
@@ -208,7 +209,7 @@ def main():
         '.jpg',
         '.png',
         '.apng',
-        '.gif',
+        #'.gif',
         '.jfif',
         '.pjpeg',
         '.pjp',
@@ -218,6 +219,7 @@ def main():
         '.7z',
         '.msi',
         '.exe',
+        '.pkg',
     ]
     all_file_path = get_all_file_path(
         '%s/Downloads' % (get_my_user_folder_path()))
