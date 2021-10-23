@@ -3,7 +3,7 @@ import os
 import os.path
 import requests
 import docx
-import getpass
+import pathlib
 
 
 def get_all_file_path(my_path):
@@ -21,7 +21,7 @@ def get_all_file_path(my_path):
 
 
 def get_my_user_folder_path():
-    return "/Users/%s" % (getpass.getuser())
+    return pathlib.Path.home()
 
 
 def music(source_file_path):
@@ -48,6 +48,7 @@ def music(source_file_path):
         music_mp3_filepath = '%s/%s' % (album_filepath, file_name)
         while os.path.exists(music_mp3_filepath):
             music_mp3_filepath = '%s %d' % (music_mp3_filepath, 1)
+        os.makedirs(music_mp3_filepath)
         os.rename(download_mp3_filepath, music_mp3_filepath)
 
 
@@ -57,6 +58,7 @@ def video(source_file_path):
         get_my_user_folder_path(), mp4_filename)
     while os.path.exists(video_mp4_filepath):
         video_mp4_filepath = '%s %d' % (video_mp4_filepath, 1)
+    os.makedirs(video_mp4_filepath)
     os.rename(source_file_path, video_mp4_filepath)
 
 
@@ -66,6 +68,7 @@ def others(source_file_path):
     others_filepath = '%s/%s' % (others_folder, split_filename)
     while os.path.exists(others_filepath):
         others_filepath = '%s %d' % (others_filepath, 1)
+    os.makedirs(others_filepath)
     os.rename(source_file_path, others_filepath)
 
 
@@ -91,6 +94,7 @@ def images(source_file_path):
         get_my_user_folder_path(), image_catagorization, image_filename)
     while os.path.exists(destination_image_path):
         destination_image_path = '%s %d' % (destination_image_path, 1)
+    os.makedirs(destination_image_path)
     os.rename(source_file_path, destination_image_path)
 
 
@@ -166,6 +170,7 @@ def document(source_file_path):
         get_my_user_folder_path(), doc_category, document_filename)
     while os.path.exists(destination_document_path):
         destination_document_path = '%s %d' % (destination_document_path, 1)
+    os.makedirs(destination_document_path)
     os.rename(source_file_path, destination_document_path)
 
 
