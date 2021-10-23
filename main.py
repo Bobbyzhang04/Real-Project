@@ -3,6 +3,7 @@ import os
 import os.path
 import requests
 import docx
+import getpass
 
 
 def get_all_file_path(my_path):
@@ -19,6 +20,10 @@ def get_all_file_path(my_path):
     return all_file_path
 
 
+def get_my_user_folder_path():
+    return "/Users/%s" % (getpass.getuser())
+
+
 def music(source_file_path):
     audio_file = eyed3.load(source_file_path)
     if audio_file.tag == None:
@@ -28,8 +33,8 @@ def music(source_file_path):
             audio_file.tag.album_artist = 'unknown_artist'
         audio_file.tag.album_artist = audio_file.tag.album_artist.replace(
             '/', '-')
-        artist_filepath = '/Users/snoopbob/Music/%s' % (
-            audio_file.tag.album_artist)
+        artist_filepath = '%s/Music/%s' % (get_my_user_folder_path(),
+                                           audio_file.tag.album_artist)
         if not os.path.exists(artist_filepath):
             os.mkdir(artist_filepath)
         if audio_file.tag.album == None:
@@ -48,14 +53,15 @@ def music(source_file_path):
 
 def video(source_file_path):
     mp4_filename = os.path.basename(source_file_path)
-    video_mp4_filepath = '/Users/snoopbob/Videos/%s' % (mp4_filename)
+    video_mp4_filepath = '%s/Videos/%s' % (
+        get_my_user_folder_path(), mp4_filename)
     while os.path.exists(video_mp4_filepath):
         video_mp4_filepath = '%s %d' % (video_mp4_filepath, 1)
     os.rename(source_file_path, video_mp4_filepath)
 
 
 def others(source_file_path):
-    others_folder = '/Users/snoopbob/Others'
+    others_folder = '%s/Others' % (get_my_user_folder_path())
     split_filename = os.path.basename(source_file_path)
     others_filepath = '%s/%s' % (others_folder, split_filename)
     while os.path.exists(others_filepath):
@@ -81,7 +87,8 @@ def images(source_file_path):
         files={'image': open(source_file_path, 'rb')})
     image_catagory = image_catagory.json()
     image_catagorization = image_catagory["result"]["categories"][0]["name"]["en"]
-    destination_image_path = "/Users/snoopbob/Pictures/%s/%s" % (image_catagorization, image_filename)
+    destination_image_path = "%s/Pictures/%s/%s" % (
+        get_my_user_folder_path(), image_catagorization, image_filename)
     while os.path.exists(destination_image_path):
         destination_image_path = '%s %d' % (destination_image_path, 1)
     os.rename(source_file_path, destination_image_path)
@@ -106,22 +113,22 @@ def msword(source_file_path):
 
 def categorize_keywords(keywords_list):
     math_science_keywords = [
-      'angle',
-      'triangle',
-      'sqaure',
-      'roots',
-      'force',
-      'mixture',
-      'solution',
-      'solvent',
-      'reaction',
-      'equilibrium',
-      'speed',
-      'acceleration',
-      'atom',
-      'equation',
-      'differenciation',
-      'integration',
+        'angle',
+        'triangle',
+        'sqaure',
+        'roots',
+        'force',
+        'mixture',
+        'solution',
+        'solvent',
+        'reaction',
+        'equilibrium',
+        'speed',
+        'acceleration',
+        'atom',
+        'equation',
+        'differenciation',
+        'integration',
     ]
     i = 0
     while i < len(keywords_list):
@@ -134,7 +141,7 @@ def categorize_keywords(keywords_list):
 def document(source_file_path):
     split_filename = os.path.splitext(source_file_path)
     file_ext = str.lower(split_filename[1])
-    ms_ext=[
+    ms_ext = [
         '.doc',
         '.docx',
         '.ods',
@@ -149,19 +156,21 @@ def document(source_file_path):
     sm_api_key = '7FB201A31A'
     request_body = dict()
     request_body['sm_api_input'] = text_data
-    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10) 
+    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (
+        sm_api_key, 10)
     response = requests.post(url, request_body)
     dict_response = response.json()
     keywords = dict_response['sm_api_keyword_array']
     doc_category = categorize_keywords(keywords)
-    destination_document_path = "/Users/snoopbob/document/%s/%s" % (doc_category, document_filename)
+    destination_document_path = "%s/document/%s/%s" % (
+        get_my_user_folder_path(), doc_category, document_filename)
     while os.path.exists(destination_document_path):
         destination_document_path = '%s %d' % (destination_document_path, 1)
     os.rename(source_file_path, destination_document_path)
 
 
 def main():
-    document_ext=[
+    document_ext = [
         '.doc',
         '.docx',
         '.ods',
@@ -200,12 +209,13 @@ def main():
         '.pjp',
     ]
     others_ext = [
-        '.zip', 
-        '.7z', 
-        '.msi', 
+        '.zip',
+        '.7z',
+        '.msi',
         '.exe',
     ]
-    all_file_path = get_all_file_path('/Users/snoopbob/Downloads')
+    all_file_path = get_all_file_path(
+        '%s/Downloads' % (get_my_user_folder_path()))
     i = 0
     while i < len(all_file_path):
         source_file_path = all_file_path[i]
