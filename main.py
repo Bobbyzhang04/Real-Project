@@ -50,6 +50,7 @@ def music(source_file_path):
             music_mp3_filepath = '%s %d' % (music_mp3_filepath, 1)
         os.makedirs(os.path.dirname(music_mp3_filepath), exist_ok=True)
         os.rename(download_mp3_filepath, music_mp3_filepath)
+        print("%s -> %s" % (download_mp3_filepath, music_mp3_filepath))
 
 
 def video(source_file_path):
@@ -58,9 +59,10 @@ def video(source_file_path):
         get_my_user_folder_path(), mp4_filename)
     while os.path.exists(video_mp4_filepath):
         video_mp4_filepath = '%s/Videos/%d%s' % (
-        get_my_user_folder_path(), 1, mp4_filename)
+            get_my_user_folder_path(), 1, mp4_filename)
     os.makedirs(os.path.dirname(video_mp4_filepath), exist_ok=True)
     os.rename(source_file_path, video_mp4_filepath)
+    print("%s -> %s" % (source_file_path, video_mp4_filepath))
 
 
 def others(source_file_path):
@@ -71,6 +73,7 @@ def others(source_file_path):
         others_filepath = '%s %d' % (others_filepath, 1)
     os.makedirs(os.path.dirname(others_filepath), exist_ok=True)
     os.rename(source_file_path, others_filepath)
+    print("%s -> %s" % (source_file_path, others_filepath))
 
 
 def images(source_file_path):
@@ -97,6 +100,7 @@ def images(source_file_path):
         destination_image_path = '%s %d' % (destination_image_path, 1)
     os.makedirs(os.path.dirname(destination_image_path), exist_ok=True)
     os.rename(source_file_path, destination_image_path)
+    print("%s -> %s" % (source_file_path, destination_image_path))
 
 
 def text(source_file_path):
@@ -173,6 +177,7 @@ def document(source_file_path):
         destination_document_path = '%s %d' % (destination_document_path, 1)
     os.makedirs(os.path.dirname(destination_document_path), exist_ok=True)
     os.rename(source_file_path, destination_document_path)
+    print("%s -> %s" % (source_file_path, destination_document_path))
 
 
 def main():
@@ -209,7 +214,7 @@ def main():
         '.jpg',
         '.png',
         '.apng',
-        #'.gif',
+        # '.gif',
         '.jfif',
         '.pjpeg',
         '.pjp',
@@ -224,21 +229,33 @@ def main():
     all_file_path = get_all_file_path(
         '%s/Downloads' % (get_my_user_folder_path()))
     i = 0
+    num_organized = 0
+    num_not_organized = 0
     while i < len(all_file_path):
         source_file_path = all_file_path[i]
         split_filename = os.path.splitext(source_file_path)
         file_ext = str.lower(split_filename[1])
         if file_ext in music_ext:
             music(source_file_path)
+            num_organized += 1
         elif file_ext in video_ext:
             video(source_file_path)
+            num_organized += 1
         elif file_ext in img_ext:
             images(source_file_path)
+            num_organized += 1
         elif file_ext in others_ext:
             others(source_file_path)
+            num_organized += 1
         elif file_ext in document_ext:
             document(source_file_path)
+            num_organized += 1
+        else:
+            num_not_organized += 1
         i = i + 1
+    print("%d files organized" % (num_organized))
+    print("%d files left untouched" % (num_not_organized))
+    input('Press enter to quit...')
 
 
 if __name__ == '__main__':
