@@ -1,7 +1,7 @@
 # X Cleaner
-```bash
+```powershell
 pyinstaller --onefile main.py
 ```
-```bash
+```powershell
 makeappx pack /m .\appxmanifest.xml /f .\MyMapping.txt /p xcleaner.msix
 ```
