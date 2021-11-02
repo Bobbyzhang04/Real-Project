@@ -1,3 +1,7 @@
 # X Cleaner
- 
-`makeappx pack /m .\appxmanifest.xml /f .\MyMapping.txt /p xcleaner.msix`
+```
+pyinstaller --onefile main.py
+```
+```
+makeappx pack /m .\appxmanifest.xml /f .\MyMapping.txt /p xcleaner.msix
+```
