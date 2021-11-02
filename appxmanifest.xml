@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
-	<Identity Name="CodingMindsAcademy.XCleaner" Version="1.0.0.0" Publisher="CN=Coding Minds Academy" ProcessorArchitecture="x64" />
+	<Identity Name="58950CodingMindsAcademy.XCleaner" Version="1.0.0.0" Publisher="CN=1F0ACA11-1D94-423D-AB17-6572BE8A00CD" ProcessorArchitecture="x64" />
 	<Properties>
 		<DisplayName>X Cleaner</DisplayName>
 		<PublisherDisplayName>Coding Minds Academy</PublisherDisplayName>
@@ -10,7 +10,7 @@
 		<Resource Language="en-us" />
 	</Resources>
 	<Dependencies>
-		<TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.10240.0" MaxVersionTested="10.0.19044.0" />
+		<TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19044.0" />
 	</Dependencies>
 	<Applications>
 		<Application Id="xcleaner" Executable="xcleaner.exe" EntryPoint="Windows.Application">
