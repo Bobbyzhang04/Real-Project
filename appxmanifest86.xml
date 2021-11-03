@@ -13,7 +13,7 @@
 		<TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19044.0" />
 	</Dependencies>
 	<Applications>
-		<Application Id="xcleaner" Executable="xcleaner.exe" EntryPoint="Windows.Application">
+		<Application Id="xcleaner" Executable="xcleaner_x86.exe" EntryPoint="Windows.Application">
 			<uap:VisualElements DisplayName="X Cleaner" Description="X Cleaner" Square150x150Logo="logo150.png" Square44x44Logo="logo44.png" BackgroundColor="white" />
 		</Application>
 	</Applications>

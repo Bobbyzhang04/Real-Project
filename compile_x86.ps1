@@ -1,0 +1,1 @@
+pyinstaller --specpath spec/x86 --distpath dist/x86 --workpath build/x86 --onefile main.py
