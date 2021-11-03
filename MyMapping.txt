@@ -3,6 +3,6 @@
 "ResourceId" "English"
 [Files]
 "dist/main.exe" "xcleaner.exe"
-"logo.png" "logo.png"
-"logo150.png" "logo150.png"
 "logo44.png" "logo44.png"
+"logo50.png" "logo50.png"
+"logo150.png" "logo150.png"
