@@ -232,26 +232,29 @@ def main():
     num_organized = 0
     num_not_organized = 0
     while i < len(all_file_path):
-        source_file_path = all_file_path[i]
-        split_filename = os.path.splitext(source_file_path)
-        file_ext = str.lower(split_filename[1])
-        if file_ext in music_ext:
-            music(source_file_path)
-            num_organized += 1
-        elif file_ext in video_ext:
-            video(source_file_path)
-            num_organized += 1
-        elif file_ext in img_ext:
-            images(source_file_path)
-            num_organized += 1
-        elif file_ext in others_ext:
-            others(source_file_path)
-            num_organized += 1
-        elif file_ext in document_ext:
-            document(source_file_path)
-            num_organized += 1
-        else:
-            num_not_organized += 1
+        try:
+            source_file_path = all_file_path[i]
+            split_filename = os.path.splitext(source_file_path)
+            file_ext = str.lower(split_filename[1])
+            if file_ext in music_ext:
+                music(source_file_path)
+                num_organized += 1
+            elif file_ext in video_ext:
+                video(source_file_path)
+                num_organized += 1
+            elif file_ext in img_ext:
+                images(source_file_path)
+                num_organized += 1
+            elif file_ext in others_ext:
+                others(source_file_path)
+                num_organized += 1
+            elif file_ext in document_ext:
+                document(source_file_path)
+                num_organized += 1
+            else:
+                num_not_organized += 1
+        except:
+            pass
         i = i + 1
     print("%d files organized" % (num_organized))
     print("%d files left untouched" % (num_not_organized))
