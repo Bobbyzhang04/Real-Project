@@ -253,8 +253,10 @@ def main():
                 num_organized += 1
             else:
                 num_not_organized += 1
+                print("Ignoring %s" % (source_file_path))
         except:
-            pass
+            num_not_organized += 1
+            print("Ignoring %s" % (source_file_path))
         i = i + 1
     print("%d files organized" % (num_organized))
     print("%d files left untouched" % (num_not_organized))
