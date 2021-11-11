@@ -56,47 +56,27 @@ def music(source_file_path):
         album_filepath = '%s/%s' % (artist_filepath, audio_file.tag.album)
         if not os.path.exists(album_filepath):
             os.mkdir(album_filepath)
-        download_mp3_filepath = source_file_path
-        file_name = os.path.basename(source_file_path)
-        music_mp3_filepath = '%s/%s' % (album_filepath, file_name)
-        while os.path.exists(music_mp3_filepath):
-            music_mp3_filepath = '%s %d' % (music_mp3_filepath, 1)
-        os.makedirs(os.path.dirname(music_mp3_filepath), exist_ok=True)
-        os.rename(download_mp3_filepath, music_mp3_filepath)
-        print("%s -> %s" % (download_mp3_filepath, music_mp3_filepath))
+        move_file(source_file_path, artist_filepath)
 
 
 def video(source_file_path):
-    mp4_filename = os.path.basename(source_file_path)
-    video_mp4_filepath = '%s/Videos/%s' % (
-        get_my_user_folder_path(), mp4_filename)
-    while os.path.exists(video_mp4_filepath):
-        video_mp4_filepath = '%s/Videos/%d%s' % (
-            get_my_user_folder_path(), 1, mp4_filename)
-    os.makedirs(os.path.dirname(video_mp4_filepath), exist_ok=True)
-    os.rename(source_file_path, video_mp4_filepath)
-    print("%s -> %s" % (source_file_path, video_mp4_filepath))
+    video_mp4_filepath = '%s/Videos' % (get_my_user_folder_path())
+    move_file(source_file_path, video_mp4_filepath)
 
 
 def others(source_file_path):
     others_folder = '%s/Others' % (get_my_user_folder_path())
-    split_filename = os.path.basename(source_file_path)
-    others_filepath = '%s/%s' % (others_folder, split_filename)
-    while os.path.exists(others_filepath):
-        others_filepath = '%s %d' % (others_filepath, 1)
-    os.makedirs(os.path.dirname(others_filepath), exist_ok=True)
-    os.rename(source_file_path, others_filepath)
-    print("%s -> %s" % (source_file_path, others_filepath))
+    move_file(source_file_path, others_folder)
 
 
 def images(source_file_path):
     api_key = 'acc_b580a33df0d99bb'
     api_secret = '508be5bf54a6c634ee73057797de606f'
-    image_filename = os.path.basename(source_file_path)
     upload_info = requests.post(
         'https://api.imagga.com/v2/uploads',
         auth=(api_key, api_secret),
-        files={'image': open(source_file_path, 'rb')})
+        files={'image': open(source_file_path, 'rb')},
+    )
     upload_info = upload_info.json()
     upload_id = upload_info["result"]["upload_id"]
     image_url = 'https://api.imagga.com/v2/categories/personal_photos?image_upload_id=%s' % (
@@ -104,16 +84,12 @@ def images(source_file_path):
     image_catagory = requests.post(
         image_url,
         auth=(api_key, api_secret),
-        files={'image': open(source_file_path, 'rb')})
+        files={'image': open(source_file_path, 'rb')},
+    )
     image_catagory = image_catagory.json()
     image_catagorization = image_catagory["result"]["categories"][0]["name"]["en"]
-    destination_image_path = "%s/Pictures/%s/%s" % (
-        get_my_user_folder_path(), image_catagorization, image_filename)
-    while os.path.exists(destination_image_path):
-        destination_image_path = '%s %d' % (destination_image_path, 1)
-    os.makedirs(os.path.dirname(destination_image_path), exist_ok=True)
-    os.rename(source_file_path, destination_image_path)
-    print("%s -> %s" % (source_file_path, destination_image_path))
+    destination_image_path = "%s/Pictures/%s" % (get_my_user_folder_path(), image_catagorization)
+    move_file(source_file_path, destination_image_path)
 
 
 def text(source_file_path):
@@ -173,24 +149,16 @@ def document(source_file_path):
         text_data = text(source_file_path)
     elif file_ext in ms_ext:
         text_data = msword(source_file_path)
-
-    document_filename = os.path.basename(source_file_path)
     sm_api_key = '7FB201A31A'
     request_body = dict()
     request_body['sm_api_input'] = text_data
-    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (
-        sm_api_key, 10)
+    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10)
     response = requests.post(url, request_body)
     dict_response = response.json()
     keywords = dict_response['sm_api_keyword_array']
     doc_category = categorize_keywords(keywords)
-    destination_document_path = "%s/document/%s/%s" % (
-        get_my_user_folder_path(), doc_category, document_filename)
-    while os.path.exists(destination_document_path):
-        destination_document_path = '%s %d' % (destination_document_path, 1)
-    os.makedirs(os.path.dirname(destination_document_path), exist_ok=True)
-    os.rename(source_file_path, destination_document_path)
-    print("%s -> %s" % (source_file_path, destination_document_path))
+    destination_document_path = "%s/document/%s" % (get_my_user_folder_path(), doc_category)
+    move_file(source_file_path, destination_document_path)
 
 
 def main():
