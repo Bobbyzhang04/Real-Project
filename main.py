@@ -1,9 +1,11 @@
-import eyed3
 import os
 import os.path
-import requests
-import docx
 import pathlib
+import time
+
+import docx
+import eyed3
+import requests
 
 
 def get_all_file_path(my_path):
@@ -136,7 +138,11 @@ def categorize_keywords(keywords_list):
     return 'everything_else'
 
 
+document_last_used = 0
+
+
 def document(source_file_path):
+    global document_last_used
     split_filename = os.path.splitext(source_file_path)
     file_ext = str.lower(split_filename[1])
     ms_ext = [
@@ -149,16 +155,22 @@ def document(source_file_path):
         text_data = text(source_file_path)
     elif file_ext in ms_ext:
         text_data = msword(source_file_path)
+    timeout = document_last_used + 10 - time.time()
+    if timeout > 0:
+        print("Estimated %f s processing document contents %s" % (timeout, source_file_path))
+        time.sleep(timeout)
     sm_api_key = '7FB201A31A'
     request_body = dict()
     request_body['sm_api_input'] = text_data
     url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10)
     response = requests.post(url, request_body)
+    document_last_used = time.time()
     dict_response = response.json()
-    keywords = dict_response['sm_api_keyword_array']
-    doc_category = categorize_keywords(keywords)
-    destination_document_path = "%s/document/%s" % (get_my_user_folder_path(), doc_category)
-    move_file(source_file_path, destination_document_path)
+    if dict_response.get('sm_api_error') not in [0, 1, 2, 3]:
+        keywords = dict_response['sm_api_keyword_array']
+        doc_category = categorize_keywords(keywords)
+        destination_document_path = "%s/Documents/%s" % (get_my_user_folder_path(), doc_category)
+        move_file(source_file_path, destination_document_path)
 
 
 def main():
@@ -207,8 +219,7 @@ def main():
         '.exe',
         '.pkg',
     ]
-    all_file_path = get_all_file_path(
-        '%s/Downloads' % (get_my_user_folder_path()))
+    all_file_path = get_all_file_path('%s/Downloads' % (get_my_user_folder_path()))
     i = 0
     num_organized = 0
     num_not_organized = 0
