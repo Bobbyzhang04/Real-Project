@@ -24,6 +24,19 @@ def get_my_user_folder_path():
     return pathlib.Path.home()
 
 
+def move_file(source_filepath, destination_folder):
+    filename = os.path.basename(source_filepath)
+    name, extension = os.path.splitext(filename)
+    append_name = 1
+    destination_filepath = "%s/%s%s" % (destination_folder, name, extension)
+    while os.path.exists(destination_filepath):
+        append_name += 1
+        destination_filepath = "%s/%s %d%s" % (destination_folder, name, append_name, extension)
+    os.makedirs(os.path.dirname(destination_filepath), exist_ok=True)
+    os.rename(source_filepath, destination_filepath)
+    print("Moved %s -> %s" % (source_filepath, destination_filepath))
+
+
 def music(source_file_path):
     audio_file = eyed3.load(source_file_path)
     if audio_file.tag == None:
