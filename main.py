@@ -9,10 +9,7 @@ import requests
 
 
 def get_all_file_path(my_path):
-    only_file_names = [
-        f for f in os.listdir(my_path)
-        if os.path.isfile(os.path.join(my_path, f))
-    ]
+    only_file_names = [f for f in os.listdir(my_path) if os.path.isfile(os.path.join(my_path, f))]
     i = 0
     all_file_path = []
     while i < len(only_file_names):
@@ -46,10 +43,8 @@ def music(source_file_path):
     else:
         if audio_file.tag.album_artist == None:
             audio_file.tag.album_artist = 'unknown_artist'
-        audio_file.tag.album_artist = audio_file.tag.album_artist.replace(
-            '/', '-')
-        artist_filepath = '%s/Music/%s' % (get_my_user_folder_path(),
-                                           audio_file.tag.album_artist)
+        audio_file.tag.album_artist = audio_file.tag.album_artist.replace('/', '-')
+        artist_filepath = '%s/Music/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist)
         if not os.path.exists(artist_filepath):
             os.mkdir(artist_filepath)
         if audio_file.tag.album == None:
@@ -81,8 +76,7 @@ def images(source_file_path):
     )
     upload_info = upload_info.json()
     upload_id = upload_info["result"]["upload_id"]
-    image_url = 'https://api.imagga.com/v2/categories/personal_photos?image_upload_id=%s' % (
-        upload_id)
+    image_url = 'https://api.imagga.com/v2/categories/personal_photos?image_upload_id=%s' % (upload_id)
     image_catagory = requests.post(
         image_url,
         auth=(api_key, api_secret),
