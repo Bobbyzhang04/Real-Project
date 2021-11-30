@@ -43,6 +43,23 @@ def move_file(source_filepath, destination_folder):
         print("Cannot move %s to %s" % (source_filepath, destination_filepath))
 
 
+def change_forbidden_filename(filename: str) -> str:
+    forbidden = [
+        '\\',
+        '/',
+        ':',
+        '*',
+        '?',
+        '"',
+        '<',
+        '>',
+        '|',
+    ]
+    for c in forbidden:
+        filename = filename.replace(c, '-')
+    return filename
+
+
 def music(source_file_path):
     audio_file = eyed3.load(source_file_path)
     if audio_file.tag == None:
@@ -51,11 +68,11 @@ def music(source_file_path):
         if audio_file.tag.album_artist == None:
             audio_file.tag.album_artist = 'unknown_artist'
         else:
-            audio_file.tag.album_artist = audio_file.tag.album_artist.replace('/', '-')
+            audio_file.tag.album_artist = change_forbidden_filename(audio_file.tag.album_artist)
         if audio_file.tag.album == None:
             audio_file.tag.album = 'unknown_album'
         else:
-            audio_file.tag.album = audio_file.tag.album.replace('/', '-')
+            audio_file.tag.album = change_forbidden_filename(audio_file.tag.album)
         artist_filepath = '%s/Music/%s/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist, audio_file.tag.album)
         move_file(source_file_path, artist_filepath)
 
