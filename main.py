@@ -165,36 +165,43 @@ def categorize_keywords(keywords_list: List[str]) -> str:
 smmry_upload_timestamp = 0
 
 
-def document(source_file_path):
-    global smmry_upload_timestamp
-    split_filename = os.path.splitext(source_file_path)
-    file_ext = str.lower(split_filename[1])
-    ms_ext = [
-        '.doc',
-        '.docx',
-        '.ods',
-        '.odt',
-    ]
-    if file_ext == '.txt':
-        text_data = read_text_file(source_file_path)
-    elif file_ext in ms_ext:
-        text_data = read_msword(source_file_path)
-    timeout = smmry_upload_timestamp + 10 - time.time()
-    if timeout > 0:
-        print("Estimated %f s processing document contents %s" % (timeout, source_file_path))
-        time.sleep(timeout)
-    sm_api_key = '7FB201A31A'
-    request_body = dict()
-    request_body['sm_api_input'] = text_data
-    url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10)
-    response = requests.post(url, request_body)
-    smmry_upload_timestamp = time.time()
-    dict_response = response.json()
-    if dict_response.get('sm_api_error') not in [0, 1, 2, 3]:
-        keywords = dict_response['sm_api_keyword_array']
-        doc_category = categorize_keywords(keywords)
-        destination_document_path = "%s/Documents/%s" % (get_my_user_folder_path(), doc_category)
-        move_file(source_file_path, destination_document_path)
+def document(source_file_path: str) -> bool:
+    try:
+        global smmry_upload_timestamp
+        split_filename = os.path.splitext(source_file_path)
+        file_ext = str.lower(split_filename[1])
+        ms_ext = [
+            '.doc',
+            '.docx',
+            '.ods',
+            '.odt',
+        ]
+        if file_ext == '.txt':
+            text_data = read_text_file(source_file_path)
+        elif file_ext in ms_ext:
+            text_data = read_msword(source_file_path)
+        timeout = smmry_upload_timestamp + 10 - time.time()
+        if timeout > 0:
+            print("Estimated %f s processing document contents %s" % (timeout, source_file_path))
+            time.sleep(timeout)
+        sm_api_key = '7FB201A31A'
+        request_body = dict()
+        request_body['sm_api_input'] = text_data
+        url = "https://api.smmry.com?SM_API_KEY=%s&SM_KEYWORD_COUNT=%d" % (sm_api_key, 10)
+        response = requests.post(url, request_body)
+        smmry_upload_timestamp = time.time()
+        dict_response = response.json()
+        if dict_response.get('sm_api_error') not in [0, 1, 2, 3]:
+            keywords = dict_response['sm_api_keyword_array']
+            doc_category = categorize_keywords(keywords)
+            destination_document_path = "%s/Documents/%s" % (get_my_user_folder_path(), doc_category)
+            return move_file(source_file_path, destination_document_path)
+        if type(dict_response.get('sm_api_error')) == int:
+            print("SMMRY API error type %d %s" % (dict_response.get('sm_api_error'), source_file_path))
+        return False
+    except:
+        print("SMMRY or document error %s" % (source_file_path))
+        return False
 
 
 def main():
