@@ -205,85 +205,99 @@ def document(source_file_path: str) -> bool:
 
 
 def main():
-    document_ext = [
-        '.doc',
-        '.docx',
-        '.ods',
-        '.odt',
-        # '.html',
-        # '.htm',
-        # '.pdf',
-        # '.xls',
-        # '.xlsx',
-        # '.ppt',
-        # '.pptx',
-        '.txt',
-    ]
-    video_ext = [
-        '.mp4',
-        '.mov',
-        '.wmv',
-        '.flv',
-        '.avi',
-        '.avchd',
-        '.webm',
-        '.mkv',
-    ]
-    music_ext = [
-        '.wav',
-        '.mp3',
-    ]
-    img_ext = [
-        '.jpeg',
-        '.jpg',
-        '.png',
-        '.apng',
-        # '.gif',
-        '.jfif',
-        '.pjpeg',
-        '.pjp',
-    ]
-    others_ext = [
-        '.zip',
-        '.7z',
-        '.msi',
-        '.exe',
-        '.pkg',
-    ]
-    all_file_path = get_all_file_path('%s/Downloads' % (get_my_user_folder_path()))
-    i = 0
     num_organized = 0
     num_not_organized = 0
-    while i < len(all_file_path):
-        try:
-            source_file_path = all_file_path[i]
-            split_filename = os.path.splitext(source_file_path)
-            file_ext = str.lower(split_filename[1])
-            if file_ext in music_ext:
-                music(source_file_path)
-                num_organized += 1
-            elif file_ext in video_ext:
-                video(source_file_path)
-                num_organized += 1
-            elif file_ext in img_ext:
-                images(source_file_path)
-                num_organized += 1
-            elif file_ext in others_ext:
-                others(source_file_path)
-                num_organized += 1
-            elif file_ext in document_ext:
-                document(source_file_path)
-                num_organized += 1
-            else:
+    try:
+        document_ext = [
+            '.doc',
+            '.docx',
+            '.ods',
+            '.odt',
+            # '.html',
+            # '.htm',
+            # '.pdf',
+            # '.xls',
+            # '.xlsx',
+            # '.ppt',
+            # '.pptx',
+            '.txt',
+        ]
+        video_ext = [
+            '.mp4',
+            '.mov',
+            '.wmv',
+            '.flv',
+            '.avi',
+            '.avchd',
+            '.webm',
+            '.mkv',
+        ]
+        music_ext = [
+            '.wav',
+            '.mp3',
+        ]
+        img_ext = [
+            '.jpeg',
+            '.jpg',
+            '.png',
+            '.apng',
+            # '.gif',
+            '.jfif',
+            '.pjpeg',
+            '.pjp',
+        ]
+        others_ext = [
+            '.zip',
+            '.7z',
+            '.msi',
+            '.exe',
+            '.pkg',
+        ]
+        all_file_path = get_all_file_path('%s/Downloads' % (get_my_user_folder_path()))
+        i = 0
+        while i < len(all_file_path):
+            try:
+                source_file_path = all_file_path[i]
+                split_filename = os.path.splitext(source_file_path)
+                file_ext = str.lower(split_filename[1])
+                if file_ext in music_ext:
+                    if music(source_file_path):
+                        num_organized += 1
+                    else:
+                        num_not_organized += 1
+                elif file_ext in video_ext:
+                    if video(source_file_path):
+                        num_organized += 1
+                    else:
+                        num_not_organized += 1
+                elif file_ext in img_ext:
+                    if images(source_file_path):
+                        num_organized += 1
+                    else:
+                        num_not_organized += 1
+                elif file_ext in others_ext:
+                    if others(source_file_path):
+                        num_organized += 1
+                    else:
+                        num_not_organized += 1
+                elif file_ext in document_ext:
+                    if document(source_file_path):
+                        num_organized += 1
+                    else:
+                        num_not_organized += 1
+                else:
+                    num_not_organized += 1
+                    print("Unsupported type %s" % (source_file_path))
+            except:
                 num_not_organized += 1
-                print("Ignoring %s" % (source_file_path))
-        except:
-            num_not_organized += 1
-            print("Ignoring %s" % (source_file_path))
-        i = i + 1
-    print("%d files organized" % (num_organized))
-    print("%d files left untouched" % (num_not_organized))
-    input('Press enter to quit...')
+                print("Something wrong %s" % (source_file_path))
+            i = i + 1
+    except:
+        print('Fatal error. Stopping program.')
+    finally:
+        print("%d files organized" % (num_organized))
+        print("%d files left untouched" % (num_not_organized))
+        input('Press enter to quit...')
 
 
 if __name__ == '__main__':
