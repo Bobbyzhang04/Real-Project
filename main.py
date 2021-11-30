@@ -62,21 +62,24 @@ def change_forbidden_filename(filename: str) -> str:
     return filename
 
 
-def music(source_file_path):
-    audio_file = eyed3.load(source_file_path)
-    if audio_file.tag == None:
-        pass
-    else:
-        if audio_file.tag.album_artist == None:
-            audio_file.tag.album_artist = 'unknown_artist'
+def music(source_file_path: str) -> bool:
+    try:
+        audio_file = eyed3.load(source_file_path)
+        if audio_file.tag == None:
+            pass
         else:
-            audio_file.tag.album_artist = change_forbidden_filename(audio_file.tag.album_artist)
-        if audio_file.tag.album == None:
-            audio_file.tag.album = 'unknown_album'
-        else:
-            audio_file.tag.album = change_forbidden_filename(audio_file.tag.album)
-        artist_filepath = '%s/Music/%s/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist, audio_file.tag.album)
-        move_file(source_file_path, artist_filepath)
+            if audio_file.tag.album_artist == None:
+                audio_file.tag.album_artist = 'unknown_artist'
+            else:
+                audio_file.tag.album_artist = change_forbidden_filename(audio_file.tag.album_artist)
+            if audio_file.tag.album == None:
+                audio_file.tag.album = 'unknown_album'
+            else:
+                audio_file.tag.album = change_forbidden_filename(audio_file.tag.album)
+            artist_filepath = '%s/Music/%s/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist, audio_file.tag.album)
+            return move_file(source_file_path, artist_filepath)
+    except:
+        return False
 
 
 def video(source_file_path):
