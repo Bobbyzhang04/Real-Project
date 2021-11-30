@@ -119,7 +119,7 @@ def images(source_file_path: str) -> bool:
         return False
 
 
-def read_text(source_file_path: str) -> str:
+def read_text_file(source_file_path: str) -> str:
     with open(source_file_path) as text:
         return text.readlines()
 
@@ -176,7 +176,7 @@ def document(source_file_path):
         '.odt',
     ]
     if file_ext == '.txt':
-        text_data = read_text(source_file_path)
+        text_data = read_text_file(source_file_path)
     elif file_ext in ms_ext:
         text_data = msword(source_file_path)
     timeout = smmry_upload_timestamp + 10 - time.time()
