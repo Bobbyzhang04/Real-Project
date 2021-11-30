@@ -93,26 +93,30 @@ def others(source_file_path: str) -> bool:
     return move_file(source_file_path, others_folder)
 
 
-def images(source_file_path):
-    api_key = 'acc_b580a33df0d99bb'
-    api_secret = '508be5bf54a6c634ee73057797de606f'
-    upload_info = requests.post(
-        'https://api.imagga.com/v2/uploads',
-        auth=(api_key, api_secret),
-        files={'image': open(source_file_path, 'rb')},
-    )
-    upload_info = upload_info.json()
-    upload_id = upload_info["result"]["upload_id"]
-    image_url = 'https://api.imagga.com/v2/categories/personal_photos?image_upload_id=%s' % (upload_id)
-    image_catagory = requests.post(
-        image_url,
-        auth=(api_key, api_secret),
-        files={'image': open(source_file_path, 'rb')},
-    )
-    image_catagory = image_catagory.json()
-    image_catagorization = image_catagory["result"]["categories"][0]["name"]["en"]
-    destination_image_path = "%s/Pictures/%s" % (get_my_user_folder_path(), image_catagorization)
-    move_file(source_file_path, destination_image_path)
+def images(source_file_path: str) -> bool:
+    try:
+        api_key = 'acc_b580a33df0d99bb'
+        api_secret = '508be5bf54a6c634ee73057797de606f'
+        upload_info = requests.post(
+            'https://api.imagga.com/v2/uploads',
+            auth=(api_key, api_secret),
+            files={'image': open(source_file_path, 'rb')},
+        )
+        upload_info = upload_info.json()
+        upload_id = upload_info["result"]["upload_id"]
+        image_url = 'https://api.imagga.com/v2/categories/personal_photos?image_upload_id=%s' % (upload_id)
+        image_catagory = requests.post(
+            image_url,
+            auth=(api_key, api_secret),
+            files={'image': open(source_file_path, 'rb')},
+        )
+        image_catagory = image_catagory.json()
+        image_catagorization = image_catagory["result"]["categories"][0]["name"]["en"]
+        destination_image_path = "%s/Pictures/%s" % (get_my_user_folder_path(), image_catagorization)
+        return move_file(source_file_path, destination_image_path)
+    except:
+        print("Cannot access https://api.imagga.com or load %s" % (source_file_path))
+        return False
 
 
 def text(source_file_path):
