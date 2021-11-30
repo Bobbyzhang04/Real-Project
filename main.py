@@ -2,6 +2,7 @@ import os
 import os.path
 import pathlib
 import time
+from typing import List
 
 import docx
 import eyed3
@@ -134,7 +135,7 @@ def read_msword(source_file_path: str) -> str:
     return document_content
 
 
-def categorize_keywords(keywords_list):
+def categorize_keywords(keywords_list: List[str]) -> str:
     math_science_keywords = [
         'angle',
         'triangle',
