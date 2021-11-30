@@ -79,6 +79,7 @@ def music(source_file_path: str) -> bool:
             artist_filepath = '%s/Music/%s/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist, audio_file.tag.album)
             return move_file(source_file_path, artist_filepath)
     except:
+        print("Cannot read %s" % (source_file_path))
         return False
 
 
