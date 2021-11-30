@@ -50,16 +50,13 @@ def music(source_file_path):
     else:
         if audio_file.tag.album_artist == None:
             audio_file.tag.album_artist = 'unknown_artist'
-        audio_file.tag.album_artist = audio_file.tag.album_artist.replace('/', '-')
-        artist_filepath = '%s/Music/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist)
-        if not os.path.exists(artist_filepath):
-            os.mkdir(artist_filepath)
+        else:
+            audio_file.tag.album_artist = audio_file.tag.album_artist.replace('/', '-')
         if audio_file.tag.album == None:
             audio_file.tag.album = 'unknown_album'
-        audio_file.tag.album = audio_file.tag.album.replace('/', '-')
-        album_filepath = '%s/%s' % (artist_filepath, audio_file.tag.album)
-        if not os.path.exists(album_filepath):
-            os.mkdir(album_filepath)
+        else:
+            audio_file.tag.album = audio_file.tag.album.replace('/', '-')
+        artist_filepath = '%s/Music/%s/%s' % (get_my_user_folder_path(), audio_file.tag.album_artist, audio_file.tag.album)
         move_file(source_file_path, artist_filepath)
 
 
