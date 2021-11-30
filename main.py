@@ -9,14 +9,18 @@ import requests
 
 
 def get_all_file_path(my_path):
-    only_file_names = [f for f in os.listdir(my_path) if os.path.isfile(os.path.join(my_path, f))]
-    i = 0
-    all_file_path = []
-    while i < len(only_file_names):
-        file_path = "%s/%s" % (my_path, only_file_names[i])
-        all_file_path.append(file_path)
-        i = i + 1
-    return all_file_path
+    try:
+        only_file_names = [f for f in os.listdir(my_path) if os.path.isfile(os.path.join(my_path, f))]
+        i = 0
+        all_file_path = []
+        while i < len(only_file_names):
+            file_path = "%s/%s" % (my_path, only_file_names[i])
+            all_file_path.append(file_path)
+            i = i + 1
+        return all_file_path
+    except:
+        print("Cannot list files from %s" % (my_path))
+        return []
 
 
 def get_my_user_folder_path():
