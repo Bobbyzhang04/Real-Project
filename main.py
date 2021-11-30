@@ -124,8 +124,7 @@ def read_text_file(source_file_path: str) -> str:
         return text.readlines()
 
 
-def msword(source_file_path):
-    # get data as one string
+def read_msword(source_file_path: str) -> str:
     document = docx.Document(source_file_path)
     document_content = ''
     i = 0
@@ -178,7 +177,7 @@ def document(source_file_path):
     if file_ext == '.txt':
         text_data = read_text_file(source_file_path)
     elif file_ext in ms_ext:
-        text_data = msword(source_file_path)
+        text_data = read_msword(source_file_path)
     timeout = smmry_upload_timestamp + 10 - time.time()
     if timeout > 0:
         print("Estimated %f s processing document contents %s" % (timeout, source_file_path))
