@@ -82,9 +82,9 @@ def music(source_file_path: str) -> bool:
         return False
 
 
-def video(source_file_path):
+def video(source_file_path: str) -> bool:
     video_mp4_filepath = '%s/Videos' % (get_my_user_folder_path())
-    move_file(source_file_path, video_mp4_filepath)
+    return move_file(source_file_path, video_mp4_filepath)
 
 
 def others(source_file_path):
