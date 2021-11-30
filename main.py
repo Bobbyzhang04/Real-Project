@@ -27,7 +27,7 @@ def get_my_user_folder_path():
     return pathlib.Path.home()
 
 
-def move_file(source_filepath, destination_folder):
+def move_file(source_filepath: str, destination_folder: str) -> bool:
     try:
         filename = os.path.basename(source_filepath)
         name, extension = os.path.splitext(filename)
@@ -39,8 +39,10 @@ def move_file(source_filepath, destination_folder):
             destination_filepath = "%s/%s %d%s" % (destination_folder, name, append_name, extension)
         os.rename(source_filepath, destination_filepath)
         print("Moved %s -> %s" % (source_filepath, destination_filepath))
+        return True
     except:
         print("Cannot move %s to %s" % (source_filepath, destination_filepath))
+        return False
 
 
 def change_forbidden_filename(filename: str) -> str:
