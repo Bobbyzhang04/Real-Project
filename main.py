@@ -33,10 +33,10 @@ def move_file(source_filepath, destination_folder):
         name, extension = os.path.splitext(filename)
         append_name = 1
         destination_filepath = "%s/%s%s" % (destination_folder, name, extension)
+        os.makedirs(os.path.dirname(destination_filepath), exist_ok=True)
         while os.path.exists(destination_filepath):
             append_name += 1
             destination_filepath = "%s/%s %d%s" % (destination_folder, name, append_name, extension)
-        os.makedirs(os.path.dirname(destination_filepath), exist_ok=True)
         os.rename(source_filepath, destination_filepath)
         print("Moved %s -> %s" % (source_filepath, destination_filepath))
     except:
