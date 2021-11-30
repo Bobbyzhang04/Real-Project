@@ -87,9 +87,9 @@ def video(source_file_path: str) -> bool:
     return move_file(source_file_path, video_mp4_filepath)
 
 
-def others(source_file_path):
+def others(source_file_path: str) -> bool:
     others_folder = '%s/Others' % (get_my_user_folder_path())
-    move_file(source_file_path, others_folder)
+    return move_file(source_file_path, others_folder)
 
 
 def images(source_file_path):
