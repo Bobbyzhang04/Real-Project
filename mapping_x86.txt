@@ -1,0 +1,8 @@
+[ResourceMetadata]
+"ResourceDimensions" "language-en-us"
+"ResourceId" "English"
+[Files]
+"dist/x86/main.exe" "xcleaner_x86.exe"
+"logo44.png" "logo44.png"
+"logo50.png" "logo50.png"
+"logo150.png" "logo150.png"
