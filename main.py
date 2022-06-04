@@ -21,14 +21,14 @@ tk.Label(root, text="Folder Location").place(x=20, y=60)
 path_input_area = tk.Entry(root, width=80)
 path_input_area.place(x=130, y=60)
 
-# organized button
-organize_button = ttk.Button(
-    root,
-    text='Organize',
-    command=lambda: organized_file()
-)
-
-organize_button.place(x=870, y=60)
+# # organized button
+# organize_button = ttk.Button(
+#     root,
+#     text='Organize',
+#     command=lambda: organized_file()
+# )
+#
+# organize_button.place(x=870, y=60)
 
 response = tk.Label(root, text="")
 response.pack()
