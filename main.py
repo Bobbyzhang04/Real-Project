@@ -15,7 +15,7 @@ def organized_file(event = None):
     response.config(text="Provided Input: " + f'{result[0]}\n{result[1]}')
     response_1.config(text= ''.join(result[2]))
 
-root.bind('<Return>',lambda: organized_file())
+root.bind('<Return>',organized_file)
 tk.Label(root, text="Folder Location").place(x=20, y=60)
 
 path_input_area = tk.Entry(root, width=80)
