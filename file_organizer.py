@@ -7,7 +7,9 @@ from typing import List
 import docx
 import eyed3
 import requests
+import PyPDF2
 
+removed_files = []
 
 def get_all_file_path(my_path):
     try:
@@ -39,6 +41,7 @@ def move_file(source_filepath: str, destination_folder: str) -> bool:
             append_name += 1
             destination_filepath = "%s/%s %d%s" % (destination_folder, name, append_name, extension)
         os.rename(source_filepath, destination_filepath)
+        removed_files.append(filename+' -> '+destination_filepath+'\n')
         print("Moved %s -> %s" % (source_filepath, destination_filepath))
         return True
     except:
@@ -165,6 +168,22 @@ def categorize_keywords(keywords_list: List[str]) -> str:
 
 smmry_upload_timestamp = 0
 
+def read_pdf(path):
+    # creating a pdf file object
+    pdfFileObj = open(path, 'rb')
+
+    # creating a pdf reader object
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+
+    # creating a page object
+    pageObj = pdfReader.getPage(0)
+
+    # extracting text from page
+    txt = pageObj.extractText()
+
+    # closing the pdf file object
+    pdfFileObj.close()
+    return txt
 
 def document(source_file_path: str) -> bool:
     try:
@@ -181,6 +200,8 @@ def document(source_file_path: str) -> bool:
             text_data = read_text_file(source_file_path)
         elif file_ext in ms_ext:
             text_data = read_msword(source_file_path)
+        elif file_ext == '.pdf':
+            text_data = read_pdf(source_file_path)
         timeout = smmry_upload_timestamp + 10 - time.time()
         if timeout > 0:
             print("Estimated %f s processing document contents %s" % (timeout, source_file_path))
@@ -200,8 +221,8 @@ def document(source_file_path: str) -> bool:
         if type(dict_response.get('sm_api_error')) == int:
             print("SMMRY API error type %d %s" % (dict_response.get('sm_api_error'), source_file_path))
         return False
-    except:
-        print("SMMRY or document error %s" % (source_file_path))
+    except Exception as e:
+        print("SMMRY or document error %s %s" % (source_file_path, e))
         return False
 
 
@@ -215,6 +236,10 @@ def organize(directory):
             '.ods',
             '.odt',
             '.txt',
+            '.pdf',
+            '.pptx',
+            '.xls',
+            '.xlsx',
         ]
         video_ext = [
             '.mp4',
@@ -289,4 +314,4 @@ def organize(directory):
     except:
         return 'Fatal error. Stopping program.'
     finally:
-        return ("%d files organized" % (num_organized), "%d files left untouched" % (num_not_organized))
+        return ("%d files organized" % (num_organized), "%d files left untouched" % (num_not_organized),removed_files)
